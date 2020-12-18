@@ -6,12 +6,12 @@ namespace PizzaWorld.Domain.Models
     public class Store
     {
         public List<Order> Orders {get;set;}
-        void CreateOrder()
+        public void CreateOrder()
         {
             Orders.Add(new Order());
         }
 
-        bool DeleteOrder(Order order)
+        public bool DeleteOrder(Order order)
         {
             
             try
