@@ -10,14 +10,14 @@ namespace PizzaWorld.Testing
         {
             // arrange
             // sut: Subject Under Test
-            var sut = new Pizza(); // inference
+            //var sut = new (); // inference
 
             // act
-            var actual = sut;
+            //var actual = sut;
 
             // assert
-            Assert.IsType<Pizza>(actual);
-            Assert.NotNull(actual);
+            //Assert.IsType<Pizza>(actual);
+            //Assert.NotNull(actual);
         }
     }
 }

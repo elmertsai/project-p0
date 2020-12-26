@@ -12,6 +12,7 @@ namespace PizzaWorld.Domain.Singletons
     {
         private static ClientSingleton _instance;
         public List<Store> Stores {get;set;}
+        public List<Pizza> Pizzas { get; set; }
 
         private const string _path  = @"PizzaWorld.xml";
 
@@ -43,10 +44,16 @@ namespace PizzaWorld.Domain.Singletons
             Stores.Add(new Store());
             Save();
         }
+        public void MakeAPizza()
+        {
+            
+        }
         public Store SelectStore()
         {
             int.TryParse(Console.ReadLine(), out var input);
            // Stores.FirstOrDefault(s => s. == input); // unique property, customer entered
+            // Console.WriteLine("Debug input read: "+input);
+            // Console.WriteLine(Stores.ElementAt(input));
             return Stores.ElementAtOrDefault(input); // null if there's error
 
             //Stores[input]; // exception
@@ -61,17 +68,16 @@ namespace PizzaWorld.Domain.Singletons
         }
         private void Read()
         {
-            if(File.Exists(_path))
-            {
-            var file = new StreamReader(_path);
-            var xml = new XmlSerializer(typeof(List<Store>));
-            // compared to (List<Store>) type of casting this does not throw exception and assign Stores to null
-            Stores = xml.Deserialize(file) as List<Store>; 
-            }
-            else
-            {
-                Stores = new List<Store>();
-            }
+      if (!File.Exists(_path))
+      {
+        Stores = new List<Store>();
+        return;
+      }
+
+      var file = new StreamReader(_path);
+      var xml = new XmlSerializer(typeof(List<Store>));
+
+      Stores = xml.Deserialize(file) as List<Store>;
             
         }
 
