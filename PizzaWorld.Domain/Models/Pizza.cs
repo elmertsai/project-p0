@@ -5,6 +5,10 @@ namespace PizzaWorld.Domain.Models
 {
   public class Pizza : APizzaModel
   {    
+    public Pizza()
+    {
+
+    }
     public Pizza(Crust c, Size s,List<Topping> t)
     {
       this.crust = c;
@@ -27,5 +31,18 @@ namespace PizzaWorld.Domain.Models
       sum += c.price;
       return sum;
     }
+    public void addCrust(string name)
+    {
+
+    }
+    public void addSize(string name)
+    {
+
+    }
+    public void addTopping(string name)
+    {
+      t.FirstOrDefault(top => top == )
+    }
+
   }
 }

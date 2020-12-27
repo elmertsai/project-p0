@@ -21,6 +21,9 @@ namespace PizzWorld.Storing
             builder.Entity<APizzaModel>().HasKey(p => p.EntityID);
             builder.Entity<Order>().HasKey(o => o.EntityID);
             builder.Entity<Crust>().HasKey(c => c.EntityID);
+            builder.Entity<Topping>().HasKey(t => t.EntityID);
+            builder.Entity<Size>().HasKey(size => size.EntityID);
+
 
             SeedData(builder);
         }
@@ -34,8 +37,24 @@ namespace PizzWorld.Storing
             );
             builder.Entity<Crust>().HasData(new List<Crust>
             {
-                new Store() { Name = "One"},
-                new Store() { Name = "Two"}
+                new Crust() { name = "Thin",price = 0},
+                new Crust() { name = "Hand Tossed",price = 0},
+                new Crust() { name = "Cheese-Stuffed",price = 2}
+            }
+            );
+            builder.Entity<Size>().HasData(new List<Size>
+            {
+                new Size() { name = "Small",price = 0},
+                new Size() { name = "Medium",price = 3},
+                new Size() { name = "Large",price = 5}
+            }
+            );
+            builder.Entity<Topping>().HasData(new List<Topping>
+            {
+                new Topping() { name = "Cheese",price = 0},
+                new Topping() { name = "Premium Chicken",price = 2},
+                new Topping() { name = "Pulled Pork",price = 2},
+                new Topping() { name = "Mushroom",price = 0}
             }
             );
         }
