@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PizzWorld.Storing;
 
 namespace PizzaWorld.Storing.Migrations
 {
     [DbContext(typeof(PizzaWorldContext))]
-    partial class PizzaWorldContextModelSnapshot : ModelSnapshot
+    [Migration("20201228233505_First Migration")]
+    partial class FirstMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,19 +74,19 @@ namespace PizzaWorld.Storing.Migrations
                     b.HasData(
                         new
                         {
-                            EntityID = 637452710179906803L,
+                            EntityID = 637447773049015173L,
                             name = "Thin",
                             price = 0.0
                         },
                         new
                         {
-                            EntityID = 637452710179907944L,
+                            EntityID = 637447773049015881L,
                             name = "Hand Tossed",
                             price = 0.0
                         },
                         new
                         {
-                            EntityID = 637452710179907960L,
+                            EntityID = 637447773049015897L,
                             name = "Cheese-Stuffed",
                             price = 2.0
                         });
@@ -132,19 +134,19 @@ namespace PizzaWorld.Storing.Migrations
                     b.HasData(
                         new
                         {
-                            EntityID = 637452710179908899L,
+                            EntityID = 637447773049016538L,
                             name = "Small",
                             price = 0.0
                         },
                         new
                         {
-                            EntityID = 637452710179908930L,
+                            EntityID = 637447773049016570L,
                             name = "Medium",
                             price = 3.0
                         },
                         new
                         {
-                            EntityID = 637452710179908941L,
+                            EntityID = 637447773049016580L,
                             name = "Large",
                             price = 5.0
                         });
@@ -170,13 +172,13 @@ namespace PizzaWorld.Storing.Migrations
                     b.HasData(
                         new
                         {
-                            EntityID = 637452710179865002L,
+                            EntityID = 637447773048974487L,
                             Address = "Store 1 Address",
                             Name = "One"
                         },
                         new
                         {
-                            EntityID = 637452710179898176L,
+                            EntityID = 637447773049007237L,
                             Address = "Store 2 Address",
                             Name = "Two"
                         });
@@ -207,25 +209,25 @@ namespace PizzaWorld.Storing.Migrations
                     b.HasData(
                         new
                         {
-                            EntityID = 637452710179909666L,
+                            EntityID = 637447773049017362L,
                             name = "Cheese",
                             price = 0.0
                         },
                         new
                         {
-                            EntityID = 637452710179910172L,
+                            EntityID = 637447773049017888L,
                             name = "Premium Chicken",
                             price = 2.0
                         },
                         new
                         {
-                            EntityID = 637452710179910188L,
+                            EntityID = 637447773049017904L,
                             name = "Pulled Pork",
                             price = 2.0
                         },
                         new
                         {
-                            EntityID = 637452710179910198L,
+                            EntityID = 637447773049017914L,
                             name = "Mushroom",
                             price = 0.0
                         });

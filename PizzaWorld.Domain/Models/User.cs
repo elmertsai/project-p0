@@ -13,7 +13,7 @@ namespace PizzaWorld.Domain.Models
         public Store SelectedStore { get; set; }
         public override string ToString()
         {
-            return $"I have selected this store: {SelectedStore}"; //$ String interpolation
+            return $"I have selected this store: {SelectedStore.Name}"; //$ String interpolation
         }
     
     }

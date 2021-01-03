@@ -9,10 +9,13 @@ namespace PizzWorld.Storing
     {
         public DbSet<Store> Stores { get; set; }    
         public DbSet<User> Users { get; set; }
+        public DbSet<Crust> Crusts { get; set; }
+        public DbSet<Topping> Toppings { get; set; }
+        public DbSet<Size> Sizes { get; set; }
         public DbSet<APizzaModel> Pizzas { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
-            builder.UseSqlServer("Server=elmerpizzaworlddb.database.windows.net,1433;Initial Catalog=PizzaWorldDB;User ID=;Password=Ppp12312344;");
+            builder.UseSqlServer("Server=elmerpizzaworlddb.database.windows.net;Initial Catalog=PizzaWorldDB;User ID=sqladmin;Password=Ppp12312344;");
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -50,13 +50,60 @@ namespace PizzaWorld.Domain.Singletons
         }
         public Store SelectStore()
         {
-            int.TryParse(Console.ReadLine(), out var input);
+            bool done = false;
+            var input = 0;
+            while(!done)
+            {
+                int.TryParse(Console.ReadLine(), out input);
+
+                if(input > Stores.Count|| input <=0)
+                {
+                    Console.WriteLine("Please enter a valid input (Number representing the store)");
+                }
+                else
+                {
+                    Console.WriteLine("Selecting store...");
+                    done = true;
+                }
+                 
+            }
+            // int.TryParse(Console.ReadLine(), out var input);
            // Stores.FirstOrDefault(s => s. == input); // unique property, customer entered
             // Console.WriteLine("Debug input read: "+input);
             // Console.WriteLine(Stores.ElementAt(input));
-            return Stores.ElementAtOrDefault(input); // null if there's error
+            return Stores.ElementAtOrDefault(input-1); // null if there's error
 
             //Stores[input]; // exception
+        }
+        public int UserOrStore() //return 1 if user, 2 if store
+        {
+            bool done = false;
+            var input = 0;
+            Console.WriteLine("Select to use as user or store:");
+            Console.WriteLine("1) User");
+            Console.WriteLine("2) Store");
+            while(!done)
+            {
+                int.TryParse(Console.ReadLine(), out input);
+
+                if(input == 1)
+                {
+                    Console.WriteLine("Using the app as user...");
+                    return 1;
+                }
+                else if(input ==2)
+                {
+                    Console.WriteLine("Using the app as store...");
+                    return 2;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter a valid option");
+                }
+                return -1; //should not reach here
+                 
+            }
+            return -1; //should not reach here
         }
 
         private void Save()
