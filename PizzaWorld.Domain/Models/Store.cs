@@ -10,6 +10,7 @@ namespace PizzaWorld.Domain.Models
         public string Name { get; set; }
         public string Address { get; set; }
         public List<Order> Orders {get;set;}
+    
         public Store()
         {
             Name = "Default Name";
@@ -19,14 +20,17 @@ namespace PizzaWorld.Domain.Models
                 Orders = new List<Order>();
             }
         }
-        public void CreateOrder()
+        public void CreateOrder(List<APizzaModel> aPizzas, User user)
         {
-            Order o = new Order();
+            Order o = new Order(aPizzas);
+            o.Store = this;
+            o.CalculatePrice();
+            o.User = user;
+
             Orders.Add(o);
             // System.Console.WriteLine(Orders.Count);
             // System.Console.WriteLine(o);
         }
-
         public bool DeleteOrder(Order order)
         {
             

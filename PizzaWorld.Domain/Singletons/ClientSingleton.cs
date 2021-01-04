@@ -67,13 +67,9 @@ namespace PizzaWorld.Domain.Singletons
                 }
                  
             }
-            // int.TryParse(Console.ReadLine(), out var input);
-           // Stores.FirstOrDefault(s => s. == input); // unique property, customer entered
-            // Console.WriteLine("Debug input read: "+input);
-            // Console.WriteLine(Stores.ElementAt(input));
+
             return Stores.ElementAtOrDefault(input-1); // null if there's error
 
-            //Stores[input]; // exception
         }
         public int UserOrStore() //return 1 if user, 2 if store
         {

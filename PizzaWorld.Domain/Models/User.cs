@@ -6,11 +6,14 @@ namespace PizzaWorld.Domain.Models
     public class User : AEntity
     {
         public List<Order> Orders { get; set; }
+        public string Name { get; set; }
+        public Store SelectedStore { get; set; }
+
         public User()
         {
             Orders = new List<Order>();
         }
-        public Store SelectedStore { get; set; }
+
         public override string ToString()
         {
             return $"I have selected this store: {SelectedStore.Name}"; //$ String interpolation

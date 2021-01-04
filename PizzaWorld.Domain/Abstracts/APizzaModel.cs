@@ -8,6 +8,9 @@ namespace PizzaWorld.Domain.Abstracts
     public Crust crust { get; set; }
     public Size size { get; set; }
     public List<Topping> toppings { get; set; }
+    // public long CrustEntityID { get; set; }
+    // public long SizeEntityID {get;set;}
+
     public virtual void SetPrice()
     { 
     }

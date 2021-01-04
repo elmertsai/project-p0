@@ -34,30 +34,37 @@ namespace PizzWorld.Storing
         {
             builder.Entity<Store>().HasData(new List<Store>
             {
-            new Store() { Name = "One", Address = "Store 1 Address"},
-            new Store() { Name = "Two", Address = "Store 2 Address"}
+            new Store() { Name = "One", Address = "Store 1 Address", EntityID =1},
+            new Store() { Name = "Two", Address = "Store 2 Address", EntityID =2}
             }
             );
             builder.Entity<Crust>().HasData(new List<Crust>
             {
-                new Crust() { name = "Thin",price = 0},
-                new Crust() { name = "Hand Tossed",price = 0},
-                new Crust() { name = "Cheese-Stuffed",price = 2}
+                new Crust() { name = "Thin",price = 0,EntityID=1},
+                new Crust() { name = "Hand Tossed",price = 0,EntityID=2},
+                new Crust() { name = "Cheese-Stuffed",price = 2,EntityID=3}
             }
             );
             builder.Entity<Size>().HasData(new List<Size>
             {
-                new Size() { name = "Small",price = 0},
-                new Size() { name = "Medium",price = 3},
-                new Size() { name = "Large",price = 5}
+                new Size() { name = "Small",price = 0,EntityID=1},
+                new Size() { name = "Medium",price = 3,EntityID =2},
+                new Size() { name = "Large",price = 5,EntityID =3}
             }
             );
             builder.Entity<Topping>().HasData(new List<Topping>
             {
-                new Topping() { name = "Cheese",price = 0},
-                new Topping() { name = "Premium Chicken",price = 2},
-                new Topping() { name = "Pulled Pork",price = 2},
-                new Topping() { name = "Mushroom",price = 0}
+                new Topping() { name = "Cheese",price = 0,EntityID=1},
+                new Topping() { name = "Premium Chicken",price = 2,EntityID=2},
+                new Topping() { name = "Pulled Pork",price = 2,EntityID=3},
+                new Topping() { name = "Mushroom",price = 0,EntityID=4}
+            }
+            );
+            builder.Entity<User>().HasData(new List<User>
+            {
+                new User() { Name = "Elmer",EntityID=1},
+                new User() { Name = "Elmer2",EntityID=2},
+                new User() { Name = "user3",EntityID=3}
             }
             );
         }

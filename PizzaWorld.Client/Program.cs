@@ -14,13 +14,15 @@ namespace PizzaWorld.Client
 
         static void Main(string[] args)
         {
-            //_client1.MakeAStore();
-            //PrebuiltPizza();
-            if(_client1.UserOrStore()==1)
+            PrebuiltPizza();
+            int choice = _client1.UserOrStore();
+            _client1.Stores = _sql.ReadStores().ToList();
+            
+            if(choice==1)
             {
                 UserView();
             }
-            else if(_client1.UserOrStore() ==2)
+            else if(choice ==2)
             {
                 StoreView();
             }
@@ -28,10 +30,10 @@ namespace PizzaWorld.Client
             {
                 Console.WriteLine("Something went wrong, check UserOrStore method");
             }
-            // _client1.Stores = _sql.ReadStores().ToList();
-            // UserView();
+
         }
 
+       // Print and Select methods
         static void PrintAllStores()
         {
             var sb = new System.Text.StringBuilder();
@@ -44,36 +46,342 @@ namespace PizzaWorld.Client
             }
             Console.WriteLine(sb);
         }
+        static Store SelectStore()
+        {
+            bool done = false;
+            var input = 0;
+            while(!done)
+            {
+                int.TryParse(Console.ReadLine(), out input);
+
+                if(input > _client1.Stores.Count|| input <=0)
+                {
+                    Console.WriteLine("Please enter a valid input (Number representing the store)");
+                }
+                else
+                {
+                    Console.WriteLine("Selecting store...\n\n");
+                    done = true;
+                }
+                 
+            }
+
+            return _client1.Stores.ElementAtOrDefault(input-1); // null if there's error
+
+        }
+
+        static void PrintAllOrders()
+        {
+        }
+        static void PrintAllUsers()
+        {
+            var sb = new System.Text.StringBuilder();
+            int counter = 1;
+            sb.Append(String.Format("{0,-15} {1,-15}\n\n","User Number","User Name"));
+            foreach(var user in _sql.ReadUsers().ToList())
+            {
+                sb.Append(String.Format("{0,-15} {1,-15} \n",counter,user.Name));
+                counter++;
+            }
+            Console.WriteLine(sb);
+        }
+        static User SelectUser()
+        {
+           bool done = false;
+            var input = 0;
+            while(!done)
+            {
+                int.TryParse(Console.ReadLine(), out input);
+
+                if(input > _sql.ReadUsers().ToList().Count|| input <=0)
+                {
+                    Console.WriteLine("Please enter a valid input (Number representing the User)");
+                }
+                else
+                {
+                    Console.WriteLine("Welcome back, "+ _sql.ReadUsers().ToList().ElementAtOrDefault(input-1).Name + " !");
+                    return _sql.ReadUsers().ToList().ElementAtOrDefault(input-1);
+                } 
+            }
+            Console.WriteLine("An unknown error has occured, please check SelectUser method");
+            return new User();
+        }
         static void PrintAllStoresWithEF()
         {
             var sb = new System.Text.StringBuilder();
             int counter = 1;
             sb.Append(String.Format("{0,-15} {1,-15} {2,-15}\n\n","Store Number","Store Name","Store Address"));
-            foreach(var store in _sql.ReadStores())
+            foreach(var store in _sql.ReadStores().ToList())
             {
                 sb.Append(String.Format("{0,-15} {1,-15} {2,-15}\n",counter,store.Name,store.Address));
                 counter++;
             }
             Console.WriteLine(sb);
         }
+        static void PrintAllPizzas()
+        {
+            var sb = new System.Text.StringBuilder();
+            int counter = 1;
+            sb.Append(String.Format("{0,-15} {1,-15} {2,-15}\n\n","Pizza Number","Pizza Name","Price"));
+            foreach(var pizza in _sql.ReadPizzas().ToList())
+            {
+                sb.Append(String.Format("{0,-15} {1,-15} {2,-15}\n",counter,pizza.name,pizza.price));
+                counter++;
+            }
+            Console.WriteLine(sb);  
+        }
+
+        static void PrintAllCrusts()
+        {
+            var sb = new System.Text.StringBuilder();
+            int counter = 1;
+            sb.Append(String.Format("{0,-15} {1,-15} {2,-15}\n\n","Crust Number","Curst Name","Crust Price"));
+            foreach(var crust in _sql.ReadCrust().ToList())
+            {
+                sb.Append(String.Format("{0,-15} {1,-15} {2,-15}\n",counter,crust.name,crust.price));
+                counter++;
+            }
+            Console.WriteLine(sb);
+        }
+        static Crust SelectCrust()
+        {
+            bool done = false;
+            var input = 0;
+            while(!done)
+            {
+                int.TryParse(Console.ReadLine(), out input);
+
+                if(input > _sql.ReadCrust().ToList().Count|| input <=0)
+                {
+                    Console.WriteLine("Please enter a valid input (Number representing the crust)");
+                }
+                else
+                {
+                    Console.WriteLine("Adding Crust "+ _sql.ReadCrust().ToList().ElementAtOrDefault(input-1).name+" to Pizza...");
+                    done = true;
+
+                }
+                 
+            }
+            return _sql.ReadCrust().ToList().ElementAtOrDefault(input-1); // null if there's error
+        }
+        static void PrintAllSizes()
+        {
+            var sb = new System.Text.StringBuilder();
+            int counter = 1;
+            sb.Append(String.Format("{0,-15} {1,-15} {2,-15}\n\n","Size Number","Size Name","Size Price"));
+            foreach(var size in _sql.ReadSize().ToList())
+            {
+                sb.Append(String.Format("{0,-15} {1,-15} {2,-15}\n",counter,size.name,size.price));
+                counter++;
+            }
+            Console.WriteLine(sb);
+        }
+        static Size SelectSize()
+        {
+            bool done = false;
+            var input = 0;
+            while(!done)
+            {
+                int.TryParse(Console.ReadLine(), out input);
+
+                if(input > _sql.ReadSize().ToList().Count|| input <=0)
+                {
+                    Console.WriteLine("Please enter a valid input (Number representing the size)");
+                }
+                else
+                {
+                    Console.WriteLine("Adding Size "+ _sql.ReadSize().ToList().ElementAtOrDefault(input-1).name+" to Pizza...");
+                    done = true;
+
+                }
+                 
+            }
+            return _sql.ReadSize().ToList().ElementAtOrDefault(input-1); // null if there's error
+        }
+        static void PrintAllToppings()
+        {
+            var sb = new System.Text.StringBuilder();
+            int counter = 1;
+            sb.Append(String.Format("{0,-15} {1,-15} {2,-15}\n\n","Topping Number","Topping Name","Topping Price"));
+            foreach(var topping in _sql.ReadTopping().ToList())
+            {
+                sb.Append(String.Format("{0,-15} {1,-15} {2,-15}\n",counter,topping.name,topping.price));
+                counter++;
+            }
+            Console.WriteLine(sb);
+
+        }
+        static Topping SelectTopping()
+        {
+            bool done = false;
+            var input = 0;
+            while(!done)
+            {
+                int.TryParse(Console.ReadLine(), out input);
+
+                if(input > _sql.ReadTopping().ToList().Count|| input <=0)
+                {
+                    Console.WriteLine("Please enter a valid input (Number representing the topping)");
+                }
+                else
+                {
+                    Console.WriteLine("Adding Topping "+ _sql.ReadTopping().ToList().ElementAtOrDefault(input-1).name+" to Pizza...");
+                    done = true;
+
+                }
+                 
+            }
+            return _sql.ReadTopping().ToList().ElementAtOrDefault(input-1); // null if there's error
+        }
         static void UserView()
         {
-            var user = new User();
+            User user= new User();
+            bool done = false;
+            var input = 0;
+            //create or use as existing user
+            Console.WriteLine("Welcome to the user interfact, please select one of the following options: ");
+            Console.WriteLine("1) Use app as an existing user");
+            Console.WriteLine("2) Use app as a new user");
+            while(!done)
+            {
+                int.TryParse(Console.ReadLine(), out input);
 
+                if(input == 1)
+                {
+                    PrintAllUsers();
+                    user = SelectUser();
+                    done = true;
+                }
+                else if(input == 2)
+                {
+                    user = CreateNewUser();
+                    done = true;
+                } 
+                else
+                {
+                    Console.WriteLine("Please enter a valid option. (number 1 or 2)");
+                }
+            }
+            // check if the user is properly defined
+            if(user.Name == null)
+            {
+                Console.WriteLine("Name is not properly defined, check the associated methods");
+            }
             PrintAllStoresWithEF();
             System.Console.WriteLine("Please select a store");
             user.SelectedStore =_client1.SelectStore();
-            user.SelectedStore.CreateOrder();
+            Console.WriteLine("Selected Store is: ");
+            Console.WriteLine(user.SelectedStore);
+
+            //Make Pizza
+            
+            user.SelectedStore.CreateOrder(MakePizza(),user);
             
             user.Orders.Add(user.SelectedStore.Orders.Last());
 
             System.Console.WriteLine(user.ToString());
+            
 
         }
+
+        static APizzaModel SelectPizza()
+        {
+            PrintAllPizzas();
+            APizzaModel pizza = new Pizza();
+            bool done = false;
+            var input = 0;
+            Console.WriteLine("Please choose one of the pizza");
+            while(!done)
+            {
+                int.TryParse(Console.ReadLine(), out input);
+
+                if(input > _sql.ReadPizzas().ToList().Count|| input <=0)
+                {
+                  Console.WriteLine("Please enter a valid option");
+
+                }
+                else
+                {
+                    pizza = _sql.ReadPizzas().ToList().ElementAtOrDefault(input-1);
+                    return pizza;
+                } 
+            }
+            if(pizza.name ==null)
+            {
+                Console.WriteLine("WARNING: error in SelectPizza Statement");
+            }
+            return pizza;
+        }
+        static List<APizzaModel> MakePizza()
+        {
+            bool done = false;
+            bool done2 = false;
+            var input = 0;
+            Console.WriteLine("Enter 1 to choose from the list of preset pizza, Enter 2 to make your own, 3 when finished");
+            List<APizzaModel> Pizzas = new List<APizzaModel>();
+            while(!done)
+            {
+                int.TryParse(Console.ReadLine(), out input);
+
+                if(input == 1)
+                {
+                    APizzaModel p = SelectPizza();
+                   Pizzas.Add(p);
+                    Console.WriteLine("You have selected:");
+                    Console.WriteLine("Pizza name: "+ p.name, "Price: $" +p.price);
+                }
+                else if(input == 2)
+                {
+                    PrintAllCrusts();
+                    Crust c =SelectCrust();
+                    PrintAllSizes();
+                    Size s = SelectSize();
+                    List<Topping> ts = new List<Topping>();
+                    while(!done2)
+                    {
+                        var t = new Topping();
+                        Console.WriteLine("Please select one of the options: ");
+                        Console.WriteLine("1) Add more toppings");
+                        Console.WriteLine("2) Stop");
+                        int.TryParse(Console.ReadLine(), out input);
+                        if(input == 1)
+                        {
+                            PrintAllToppings();
+                            ts.Add(SelectTopping());
+                        }
+                        else if(input ==2)
+                        {
+                            done2 = true;
+                            Console.WriteLine("Finished adding toppings...");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Please select a valid option");
+                        }
+                    
+                    }
+                    Console.WriteLine("Adding custom built Pizza...");
+                    Pizzas.Add(new Pizza(c,s,ts){name="CustomPizza"});
+
+                } 
+                else if(input == 3)
+                {
+                    Console.WriteLine("Checking out...");
+                    return Pizzas;
+                }
+                {
+                    Console.WriteLine("Please enter a valid option. (number 1, 2, or 3)");
+                }
+            
+            }
+            Console.WriteLine("WARNING: Error in MakePizza method");
+            return Pizzas;
+        }
+        
         static void PrebuiltPizza()
         {
-            Console.WriteLine("_sql.ReadPizzas().Count()");
-            if(_sql.ReadPizzas().Count()>=0)
+            if(_sql.ReadPizzas().Count()==0)
             {
                 Console.WriteLine("No Pizza found in DB! Adding pizzas");
                 Crust c=_sql.ReadCrust().FirstOrDefault(x => x.name.Contains("Hand Tossed"));
@@ -110,15 +418,87 @@ namespace PizzaWorld.Client
                 Console.WriteLine("Pizza Not empty");
             }
         }
+        static User CreateNewUser()
+        { 
+            bool done = false;
+            User user = new User();
+            Console.WriteLine("Please enter an username");
+            var input = "";
+            while(!done)
+            {
+            input = Console.ReadLine();
+            // if(_sql.ReadUsers().ToList().FirstOrDefault(n => n.Name== input)!=null)
+            if(false)
+            {
+                Console.WriteLine("Username already exist, please enter another one");
+            }
+            else
+            {
+                user.Name = input;
+                done = true;
+            }
+            }
 
+            return user;
+        }
         static void StoreView()
         {
+            bool done = false;
+            var input = 0;
             PrintAllStoresWithEF();
             System.Console.WriteLine("Please select a store");
-            Store s = _client1.SelectStore();
-            System.Console.WriteLine("Name of selected store:" + s.Name );
-            System.Console.WriteLine("Order History: ");
-            System.Console.WriteLine(s.Orders); //WIP
+            Store s = SelectStore();
+            User u = new User();
+            System.Console.WriteLine("Name of selected store:  " + s.Name );
+            while(!done)
+            {
+                Console.WriteLine("Please select one of the actions");
+                Console.WriteLine("1) Check store order history");
+                Console.WriteLine("2) Check order history of a user");
+                Console.WriteLine("3) Exist Program");
+                int.TryParse(Console.ReadLine(), out input);
+
+                if(input == 1)
+                {
+                    if(s.Orders.Count ==0)
+                    {
+                        Console.WriteLine("There are no orders in this store");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Checking order history...");
+                        Console.WriteLine(String.Format("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}\n\n",
+                                                    "Order ID","User Name","Order Time","Order Price"));
+                        for(int i = 1;i<=s.Orders.Count;i++)
+                        {
+                            Console.WriteLine(String.Format("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}\n",
+                            s.Orders[i-1].EntityID,s.Orders[i-1].User.Name,s.Orders[i-1].Ordertime, s.Orders[i-1].price));
+                        }
+                        
+                    }
+                }
+                else if(input == 2)
+                {
+                    Console.WriteLine("Selecting user...\n\n");
+                    PrintAllUsers();
+                    u = SelectUser();
+                    if(u.Orders.Intersect(s.Orders).Any()==false)
+                    {
+                        Console.WriteLine("User not found within this store\n");
+
+                    } 
+                }
+                else if(input ==3)
+                {
+                    done = true;
+                    Console.WriteLine("Exiting program...");
+                }
+                else 
+                {
+                    Console.WriteLine("Please enter a valid option");
+                }
+            }
+
 
         }
     }

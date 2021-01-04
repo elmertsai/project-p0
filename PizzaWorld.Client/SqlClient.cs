@@ -43,7 +43,15 @@ namespace PizzaWorld.Client
     {
         return _context.Toppings.ToList();
     }
-    public void UserOrderHistory(User user)
+    public IEnumerable<User> ReadUsers()
+    {
+        var us = _context.Users
+                    .Include(u => u.Orders)
+                    .ThenInclude(o => o.Pizzas)
+                    .ToList();
+        return us;
+    }
+    public IEnumerable<Order> UserOrderHistory(User user, Store store)
     {
         var u = _context.Users
                         .Include(u => u.Orders)
@@ -51,6 +59,7 @@ namespace PizzaWorld.Client
                         .ThenInclude(p => p.crust)
                         // .ThenInclude(p => p.toppings) why is it not there
                         .FirstOrDefault(u => u.EntityID == user.EntityID);
+        return _context.Stores.FirstOrDefault(n => n.EntityID==store.EntityID).Orders.Where(o=> o.User.Name == user.Name);
     }
     public IEnumerable<Size> ReadSize()
     {
@@ -63,9 +72,7 @@ namespace PizzaWorld.Client
     _context.Database.OpenConnection();
     try
     {
-        _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Stores ON");
         _context.SaveChanges();
-        _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Stores OFF");
     }
     finally
     {
@@ -77,9 +84,7 @@ namespace PizzaWorld.Client
         _context.Add(order);
     try
     {
-        _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Orders ON");
         _context.SaveChanges();
-        _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Orders OFF");
     }
     finally
     {
@@ -92,9 +97,7 @@ namespace PizzaWorld.Client
         _context.Database.OpenConnection();
     try
     {
-        _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Pizzas ON");
         _context.SaveChanges();
-        _context.Database.ExecuteSqlRaw("SET IDENTITY_INSERT dbo.Pizzas OFF");
     }
     finally
     {
@@ -106,6 +109,7 @@ namespace PizzaWorld.Client
     {
         _context.SaveChanges();
     }
+
     }
 
 }

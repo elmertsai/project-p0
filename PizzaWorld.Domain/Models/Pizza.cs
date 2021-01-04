@@ -5,6 +5,8 @@ namespace PizzaWorld.Domain.Models
 {
     public class Pizza : APizzaModel
   {    
+
+
     public Pizza()
     {
    
@@ -21,17 +23,6 @@ namespace PizzaWorld.Domain.Models
       this.name = n;
     }
 
-    public double CalculatePrice(Crust c, Size s,List<Topping> t)
-    {
-      double sum=0;
-      foreach (var item in t)
-      {
-          sum += item.price;
-      }
-      sum += s.price;
-      sum += c.price;
-      return sum;
-    }
     public override void SetPrice()
     {
       double sum=0;

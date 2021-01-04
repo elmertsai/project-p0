@@ -1,11 +1,11 @@
+using System.Collections.Generic;
 using PizzaWorld.Domain.Abstracts;
 
 namespace PizzaWorld.Domain.Models
 {
-  public class Topping : AEntity
+  public class Topping : AProduct
   {
-    public string name { get; set; }
-    public double price { get; set; }
-
+    public List<APizzaModel> Pizzas {get;set;}
+    public long APizzaModelEntityID {get;set;}
   }
 }
