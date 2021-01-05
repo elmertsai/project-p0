@@ -8,16 +8,17 @@ namespace PizzaWorld.Testing
         [Fact]
         private void Test_PizzaExists()
         {
-            // arrange
-            // sut: Subject Under Test
-            //var sut = new (); // inference
+            //arrange
+           // sut: Subject Under Test
+            var sut = new Pizza(); // inference
 
-            // act
-            //var actual = sut;
+           // act
+            var actual = sut;
 
-            // assert
-            //Assert.IsType<Pizza>(actual);
-            //Assert.NotNull(actual);
+           // assert
+            Assert.IsType<Pizza>(actual);
+            Assert.NotNull(actual);
         }
+
     }
 }
