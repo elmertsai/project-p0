@@ -53,8 +53,9 @@ namespace PizzaWorld.Client
             while(!done)
             {
                 int.TryParse(Console.ReadLine(), out input);
+            
 
-                if(input > _client1.Stores.Count|| input <=0)
+                if(input > _sql.ReadStores().ToList().Count|| input <=0)
                 {
                     Console.WriteLine("Please enter a valid input (Number representing the store)");
                 }
@@ -66,7 +67,7 @@ namespace PizzaWorld.Client
                  
             }
 
-            return _client1.Stores.ElementAtOrDefault(input-1); // null if there's error
+            return _sql.ReadStores().ToList().ElementAtOrDefault(input-1); // null if there's error
 
         }
 
@@ -268,9 +269,11 @@ namespace PizzaWorld.Client
             {
                 Console.WriteLine("Name is not properly defined, check the associated methods");
             }
+            // User Menu
             PrintAllStoresWithEF();
             System.Console.WriteLine("Please select a store");
-            user.SelectedStore =_client1.SelectStore();
+            user.SelectedStore =SelectStore();
+
             Console.WriteLine("Selected Store is: ");
             Console.WriteLine(user.SelectedStore);
 
@@ -279,12 +282,47 @@ namespace PizzaWorld.Client
             user.SelectedStore.CreateOrder(MakePizza(),user);
             
             user.Orders.Add(user.SelectedStore.Orders.Last());
-
-            System.Console.WriteLine(user.ToString());
+            _sql.UpdateUser(user);
+            _sql.UpdateStore(user.SelectedStore);
+            UserMenu(user);
+            System.Console.WriteLine("Thank you for choosing to use this app!");
             
 
         }
+        static void UserMenu(User user)
+        {
+            Console.WriteLine("Please Select one of options: ");
+            Console.WriteLine("1) See order history");
+            Console.WriteLine("2) Make a new order");
+            Console.WriteLine("3) Exit Program");
+            var input = 0;
+            int.TryParse(Console.ReadLine(), out input);
 
+            if(input == 1)
+            {
+                List<Order> o= _sql.OrderHistoryByUser(user).ToList();
+                Console.WriteLine(String.Format("{0,-25} {1,-25} {2,-25} {3,-25} {4,-25}\n","Order ID","Store Name","User Name","price","date"));
+                foreach( var order in o)
+                {
+                    Console.WriteLine(String.Format("{0,-25} {1,-25} {2,-25} {3,-25} {4,-25}\n",order.EntityID,order.Store.Name,order.User.Name,order.price,order.Ordertime));
+                } 
+
+            }
+            else if(input == 2)
+            {
+                UserView();
+            }
+            else if(input == 3)
+            {
+                Console.WriteLine("Exiting Program...");
+                Console.WriteLine("Thank you for using the pizza app!");
+            } 
+            else
+            {
+                Console.WriteLine("Invalid options");
+            }
+            
+        }
         static APizzaModel SelectPizza()
         {
             PrintAllPizzas();
@@ -318,21 +356,48 @@ namespace PizzaWorld.Client
             bool done = false;
             bool done2 = false;
             var input = 0;
-            Console.WriteLine("Enter 1 to choose from the list of preset pizza, Enter 2 to make your own, 3 when finished");
             List<APizzaModel> Pizzas = new List<APizzaModel>();
             while(!done)
             {
+                var sb = new System.Text.StringBuilder();
+                int counter = 1;
+                Order temp_o = new Order(Pizzas);
+                Console.WriteLine("Shopping Cart: ");
+                sb.Append(String.Format("{0,-25} {1,-25} {2,-25}\n","Pizza Number","Pizza Name","Total Price"));
+                sb.Append(String.Format("{0,-25} {1,-25} {2,-25}\n","","",temp_o.price));
+                foreach(var p in Pizzas)
+                {
+                    sb.Append(String.Format("{0,-25} {1,-25} {2,-25}\n",counter,p.name,p.price));
+                    counter++;
+                }
+                
+                
+                Console.WriteLine(sb);
+
+                Console.WriteLine("Choose one of the following options:");
+                Console.WriteLine("1) Preset Pizza");
+                Console.WriteLine("2) Custom Pizza");
+                Console.WriteLine("3) Finish and checkout");
                 int.TryParse(Console.ReadLine(), out input);
 
                 if(input == 1)
                 {
+                    if(temp_o.price<=250 || temp_o.Pizzas.Count<=50)
+                    {
                     APizzaModel p = SelectPizza();
-                   Pizzas.Add(p);
+                    Pizzas.Add(p);
                     Console.WriteLine("You have selected:");
                     Console.WriteLine("Pizza name: "+ p.name, "Price: $" +p.price);
+                    }
+                    else
+                    {
+                        Console.WriteLine("Too many pizzas in cart! Limist to $250 per order or 50 items");
+                    }
                 }
                 else if(input == 2)
                 {
+                    if(temp_o.price<=250 || temp_o.Pizzas.Count<=50)
+                    {
                     PrintAllCrusts();
                     Crust c =SelectCrust();
                     PrintAllSizes();
@@ -340,15 +405,25 @@ namespace PizzaWorld.Client
                     List<Topping> ts = new List<Topping>();
                     while(!done2)
                     {
+                        input = 0;
                         var t = new Topping();
                         Console.WriteLine("Please select one of the options: ");
-                        Console.WriteLine("1) Add more toppings");
+                        Console.WriteLine("1) Add more toppings, "+ts.Count+"/5 Toppings");
                         Console.WriteLine("2) Stop");
                         int.TryParse(Console.ReadLine(), out input);
+
                         if(input == 1)
                         {
+                            if(ts.Count<5)
+                            {
                             PrintAllToppings();
                             ts.Add(SelectTopping());
+                            
+                            }
+                            else
+                            {
+                                Console.WriteLine("Too many toppings!");
+                            }
                         }
                         else if(input ==2)
                         {
@@ -363,13 +438,19 @@ namespace PizzaWorld.Client
                     }
                     Console.WriteLine("Adding custom built Pizza...");
                     Pizzas.Add(new Pizza(c,s,ts){name="CustomPizza"});
-
+                    }
+                    else
+                    {
+                        Console.WriteLine("Too many pizzas in cart! Limist to $250 per order or 50 items");
+                    }
+                    
                 } 
                 else if(input == 3)
                 {
                     Console.WriteLine("Checking out...");
                     return Pizzas;
                 }
+                else
                 {
                     Console.WriteLine("Please enter a valid option. (number 1, 2, or 3)");
                 }
@@ -428,15 +509,18 @@ namespace PizzaWorld.Client
             {
             input = Console.ReadLine();
             // if(_sql.ReadUsers().ToList().FirstOrDefault(n => n.Name== input)!=null)
-            if(false)
+            if(_sql.ReadUsers().ToList().FirstOrDefault(n => n.Name== input)!=null)
             {
                 Console.WriteLine("Username already exist, please enter another one");
             }
             else
             {
                 user.Name = input;
+                Console.WriteLine("Saving new user "+user.Name + "...");
+                _sql.Save(user);
                 done = true;
             }
+
             }
 
             return user;
@@ -464,16 +548,26 @@ namespace PizzaWorld.Client
                     {
                         Console.WriteLine("There are no orders in this store");
                     }
+                    else if(s.Orders == null)
+                    {
+                        Console.WriteLine("Order is null, check method");
+                    }
                     else
                     {
                         Console.WriteLine("Checking order history...");
-                        Console.WriteLine(String.Format("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}\n\n",
-                                                    "Order ID","User Name","Order Time","Order Price"));
-                        for(int i = 1;i<=s.Orders.Count;i++)
+                        List<Order> orderhistory = new List<Order>();
+                        orderhistory = _sql.OrderHistoryByStore(s).ToList();
+                        Console.WriteLine("There are: "+orderhistory.Count+" order(s) for this store");
+
+                        // Console.WriteLine(String.Format("{0,-20} {1,-20} {2,-20} {3,-20}\n\n",
+                        //                             "Order ID","User Name","Order Time","Order Price"));
+                        // Console.WriteLine("DEBUG: "+s.Orders);
+                        
+                        Console.WriteLine(String.Format("{0,-25} {1,-25} {2,-25} {3,-25} {4,-25}\n","Order ID","Store Name","User Name","price","date"));
+                        foreach( var order in orderhistory)
                         {
-                            Console.WriteLine(String.Format("{0,-20} {1,-20} {2,-20} {3,-20} {4,-20}\n",
-                            s.Orders[i-1].EntityID,s.Orders[i-1].User.Name,s.Orders[i-1].Ordertime, s.Orders[i-1].price));
-                        }
+                            Console.WriteLine(String.Format("{0,-25} {1,-25} {2,-25} {3,-25} {4,-25}\n",order.EntityID,order.Store.Name,order.User.Name,order.price,order.Ordertime));
+                        } 
                         
                     }
                 }
@@ -487,6 +581,18 @@ namespace PizzaWorld.Client
                         Console.WriteLine("User not found within this store\n");
 
                     } 
+                    else
+                    {
+                        
+                        List<Order>orders = _sql.OrderHistoryByUser(u).Where(o=>o.Store.Name==s.Name).ToList();
+                        Console.WriteLine("User: "+u.Name+" has "+orders.Count+" orders");
+                        Console.WriteLine("The las order price was "+ orders.Last().price);
+                        Console.WriteLine(String.Format("{0,-25} {1,-25} {2,-25} {3,-25} {4,-25}\n","Order ID","Store Name","User Name","price","date"));
+                        foreach( var order in orders)
+                        {
+                            Console.WriteLine(String.Format("{0,-25} {1,-25} {2,-25} {3,-25} {4,-25}\n",order.EntityID,order.Store.Name,order.User.Name,order.price,order.Ordertime));
+                        } 
+                    }
                 }
                 else if(input ==3)
                 {

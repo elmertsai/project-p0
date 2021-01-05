@@ -15,10 +15,10 @@ namespace PizzaWorld.Domain.Models
         {
             Name = "Default Name";
             Address = "Default Address";
-            if(Orders==null)
-            {
+            // if(Orders==null)
+            // {
                 Orders = new List<Order>();
-            }
+            // }
         }
         public void CreateOrder(List<APizzaModel> aPizzas, User user)
         {

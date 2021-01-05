@@ -11,7 +11,7 @@ namespace PizzaWorld.Domain.Models
 
         public User()
         {
-            Orders = new List<Order>();
+            //Orders = new List<Order>();
         }
 
         public override string ToString()

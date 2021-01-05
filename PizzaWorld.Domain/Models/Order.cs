@@ -25,6 +25,7 @@ namespace PizzaWorld.Domain.Models
         {
             Pizzas = p;
             Ordertime = DateTime.Now;
+            CalculatePrice();
         }
         public void CalculatePrice()
         {
@@ -35,6 +36,7 @@ namespace PizzaWorld.Domain.Models
             }
             price = sum;
         }
+
         public override string ToString()
         {
             var sb = new System.Text.StringBuilder();

@@ -11,7 +11,6 @@ namespace PizzaWorld.Testing
             // arrange
             // sut: Subject Under Test
             var sut = new Order(); // inference
-
             // act
             var actual = sut;
 

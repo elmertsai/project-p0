@@ -13,12 +13,14 @@ namespace PizzWorld.Storing
         public DbSet<Topping> Toppings { get; set; }
         public DbSet<Size> Sizes { get; set; }
         public DbSet<APizzaModel> Pizzas { get; set; }
+        public DbSet<Order> Orders {get;set;}
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
             builder.UseSqlServer("Server=elmerpizzaworlddb.database.windows.net;Initial Catalog=PizzaWorldDB;User ID=sqladmin;Password=Ppp12312344;");
         }
         protected override void OnModelCreating(ModelBuilder builder)
         {
+
             builder.Entity<Store>().HasKey(s => s.EntityID);
             builder.Entity<User>().HasKey(u => u.EntityID);
             builder.Entity<APizzaModel>().HasKey(p => p.EntityID);
